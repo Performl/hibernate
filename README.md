@@ -1,6 +1,6 @@
 
 
-<img src="./assets/mascot.svg" width="150px" align="right">
+<img src="./assets/mascot.svg" width="250px" align="right">
 
 
 [![Build Status](https://travis-ci.org/performl/hibernate.svg?branch=master)](https://travis-ci.org/performl/hibernate)
