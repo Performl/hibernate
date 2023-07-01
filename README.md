@@ -16,5 +16,4 @@ Primarily built to seemlessly tackle spinning down dev environments at night and
 
 
 ## Authors
-* [@fafnirZ](https://github.com/fafnirZ)
-* [@jxperf](https://github.com/jxperf)
+* Jacky [@fafnirZ](https://github.com/fafnirZ) [@jxperf](https://github.com/jxperf)
