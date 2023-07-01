@@ -3,11 +3,11 @@
 <img src="./assets/mascot.svg" width="150px" align="right">
 
 
-[![Build Status](https://travis-ci.org/hibernate/hibernate.svg?branch=master)](https://travis-ci.org/hibernate/hibernate)
-[![Go Report Card](https://goreportcard.com/badge/github.com/hibernate/hibernate)](https://goreportcard.com/report/github.com/hibernate/hibernate)
-[![codecov](https://codecov.io/gh/hibernate/hibernate/branch/master/graph/badge.svg)](https://codecov.io/gh/hibernate/hibernate)
-[![GoDoc](https://godoc.org/github.com/hibernate/hibernate?status.svg)](https://godoc.org/github.com/hibernate/hibernate)
-![GitHub release](https://img.shields.io/github/release/hibernate/hibernate.svg)
+[![Build Status](https://travis-ci.org/performl/hibernate.svg?branch=master)](https://travis-ci.org/performl/hibernate)
+[![Go Report Card](https://goreportcard.com/badge/github.com/performl/hibernate)](https://goreportcard.com/report/github.com/performl/hibernate)
+[![codecov](https://codecov.io/gh/performl/hibernate/branch/master/graph/badge.svg)](https://codecov.io/gh/performl/hibernate)
+[![GoDoc](https://godoc.org/github.com/performl/hibernate?status.svg)](https://godoc.org/github.com/performl/hibernate)
+![GitHub release](https://img.shields.io/github/release/performl/hibernate.svg)
 
 
 # hibernate - simply save kubernetes resource costs
