@@ -4,9 +4,9 @@ import (
 	"flag"
 	"log"
 
-	"github.com/performl/hibernate/internal/config"
-	_kubeclient "github.com/performl/hibernate/internal/kubernetes"
-	_resources "github.com/performl/hibernate/internal/resources"
+	"github.com/performl/hibernate/pkg/config"
+	_kubeclient "github.com/performl/hibernate/pkg/kubernetes"
+	_resources "github.com/performl/hibernate/pkg/resources"
 )
 
 // flags

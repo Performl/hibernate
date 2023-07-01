@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/performl/hibernate/internal/utils"
+	"github.com/performl/hibernate/pkg/utils"
 
 	"gopkg.in/yaml.v2"
 )

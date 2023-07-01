@@ -9,7 +9,7 @@ import (
 	v1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	"k8s.io/client-go/util/retry"
 
-	"github.com/performl/hibernate/internal/utils"
+	"github.com/performl/hibernate/pkg/utils"
 )
 
 // implements resources interface

@@ -1,8 +1,8 @@
 package resources
 
 import (
-	"github.com/performl/hibernate/internal/config"
-	d "github.com/performl/hibernate/internal/deployments"
+	"github.com/performl/hibernate/pkg/config"
+	d "github.com/performl/hibernate/pkg/deployments"
 	"k8s.io/client-go/kubernetes"
 )
 
