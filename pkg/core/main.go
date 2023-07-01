@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 
 	"github.com/performl/hibernate/pkg/config"
 	_kubeclient "github.com/performl/hibernate/pkg/kubernetes"
@@ -24,6 +25,12 @@ func init() {
 func main() {
 	// parse flags
 	flag.Parse()
+
+	if action == "none" {
+		log.Printf("Usage of %s:\n", os.Args[0])
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	// kubernetes client
 	clientset := _kubeclient.CreateEnvironmentAwareClientSet(mode)
