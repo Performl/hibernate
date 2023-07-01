@@ -14,3 +14,7 @@
 This is a simple tool to save kubernetes resource costs. It will scale down deployments and statefulsets to 0 replicas at a scheduled time every day. It will also scale up the deployments and statefulsets to the original number of replicas at a scheduled time every day/days of a week.
 Primarily built to seemlessly tackle spinning down dev environments at night and weekends.
 
+
+## Authors
+* [@fafnirZ](https://github.com/fafnirZ)
+* [@jxperf](https://github.com/jxperf)
