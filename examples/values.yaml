@@ -1,0 +1,34 @@
+global:
+  namespace: hibernate
+
+hibernate:
+
+  image:
+    repository: hibernate # TODO
+    tag: latest # TODO
+    pullPolicy: IfNotPresent
+
+  # Environment Variables
+  # env:
+  # - name: EXAMPLE_ENV_VAR
+  #   value: "example"
+
+
+  cron:
+    timezone: Australia/Sydney
+    sleep: 0 18 * * 1-5 # 6pm every weekday
+    wake: 0 9 * * 1-5 # 9am every weekday
+
+    # for GKE spot nodes
+    # nodeSelector:
+    #   iam.gke.io/gke-metadata-server-enabled: "true"
+    #   cloud.google.com/gke-spot: "true"
+
+  config: |
+    specs:
+      resources:
+        deployments:
+        - name: app1
+          namespace: apps
+
+
