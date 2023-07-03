@@ -3,11 +3,10 @@
 <img src="./assets/mascot.svg" width="250px" align="right">
 
 
-[![Build Status](https://travis-ci.org/performl/hibernate.svg?branch=master)](https://travis-ci.org/performl/hibernate)
+[![Release](https://github.com/Performl/hibernate/actions/workflows/release.yaml/badge.svg)](https://github.com/Performl/hibernate/actions/workflows/release.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/performl/hibernate)](https://goreportcard.com/report/github.com/performl/hibernate)
 [![codecov](https://codecov.io/gh/performl/hibernate/branch/master/graph/badge.svg)](https://codecov.io/gh/performl/hibernate)
 [![GoDoc](https://godoc.org/github.com/performl/hibernate?status.svg)](https://godoc.org/github.com/performl/hibernate)
-![GitHub release](https://img.shields.io/github/release/performl/hibernate.svg)
 
 
 # hibernate - simply save kubernetes resource costs
