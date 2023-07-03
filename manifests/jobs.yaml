@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-sleep
+  namespace: hibernate
+spec:
+  timezone: Australia/Sydney
+  schedule: 0 18 * * 1-5
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-sleep
+            image: ghcr.io/performl/hibernate:latest
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=sleep
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-wake
+  namespace: hibernate
+spec:
+  timezone: Australia/Sydney
+  schedule: 0 9 * * 1-5
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-wake
+            image: ghcr.io/performl/hibernate:latest
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=wake
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config

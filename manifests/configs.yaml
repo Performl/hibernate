@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hibernate-config
+  namespace: hibernate
+data:
+  config.yaml: |
+    specs:
+      resources:
+        deployments:
+        - name: resourceName
+          namespace: namespaceName
+        statefulsets:
+        - name: resourceName
+          namespace: namespaceName
