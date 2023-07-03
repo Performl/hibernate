@@ -15,21 +15,20 @@ import (
 
 // implements resources interface
 type Deployments struct {
-	clientset *kubernetes.Clientset
-	namespace string
-	name      string
-	replicas  int32
-	typeName  string
+	clientset    *kubernetes.Clientset
+	namespace    string
+	name         string
+	replicas     int32
+	resourceType string
 }
 
 func InitDeployment(clientset *kubernetes.Clientset, namespace string, name string) *Deployments {
 	deployments := &Deployments{
-		clientset: clientset,
-		namespace: namespace,
-		name:      name,
-		typeName:  "deployment",
+		clientset:    clientset,
+		namespace:    namespace,
+		name:         name,
+		resourceType: "deployment",
 	}
-
 	// pulls data from remote
 	deployments.FetchRemoteInfo()
 
@@ -46,7 +45,7 @@ func (d *Deployments) Sleep() {
 
 func (d *Deployments) Wake() {
 	globalState := _states.GetState()
-	stateKey := _states.CreateStateKey(d.name, d.namespace, d.typeName)
+	stateKey := _states.CreateStateKey(d.name, d.namespace, d.resourceType)
 	state := globalState[stateKey].(map[string]interface{})
 	targetReplica := int32(state["replicas"].(float64))
 	d.tryUpdateDeploymentReplica(targetReplica)
@@ -54,9 +53,10 @@ func (d *Deployments) Wake() {
 
 func (d *Deployments) GetState() map[string]interface{} {
 	return map[string]interface{}{
-		"name":      d.name,
-		"namespace": d.namespace,
-		"replicas":  d.replicas,
+		"name":         d.name,
+		"namespace":    d.namespace,
+		"replicas":     d.replicas,
+		"resourceType": d.resourceType,
 	}
 }
 

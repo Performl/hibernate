@@ -52,11 +52,10 @@ func main() {
 			_resources.SleepAll(resources)
 			for _, resource := range resources {
 				s := resource.GetState()
-
+				log.Println(s)
 				name := s["name"].(string)
 				namespace := s["namespace"].(string)
-				resourceType := s["typeName"].(string)
-
+				resourceType := s["resourceType"].(string)
 				_states.SetState(
 					_states.CreateStateKey(name, namespace, resourceType),
 					map[string]interface{}{

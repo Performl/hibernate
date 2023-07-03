@@ -1,6 +1,8 @@
 package states
 
 import (
+	"encoding/json"
+
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -33,7 +35,7 @@ import (
 // 8. (resources dont exist, statefile exists) -> wake
 //   - create resources using statefile
 //   - delete statefile
-var state State
+var state = State{}
 
 // default name and namespace
 // TODO to be overriden by ENV VARS
@@ -62,7 +64,8 @@ func PersistState(clientset *kubernetes.Clientset) error {
 
 	data := make(map[string]string)
 	for key, value := range state {
-		data[key] = value.(string)
+		b, _ := json.Marshal(value)
+		data[key] = string(b)
 	}
 
 	err := CreateConfigMap(clientset, name, namespace, data)
