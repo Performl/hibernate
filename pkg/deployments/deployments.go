@@ -2,6 +2,7 @@ package deployments
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,7 +47,8 @@ func (d *Deployments) Sleep() {
 func (d *Deployments) Wake() {
 	globalState := _states.GetState()
 	stateKey := _states.CreateStateKey(d.name, d.namespace, d.resourceType)
-	state := globalState[stateKey].(map[string]interface{})
+	state := map[string]interface{}{}
+	json.Unmarshal([]byte(globalState[stateKey].(string)), &state)
 	targetReplica := int32(state["replicas"].(float64))
 	d.tryUpdateDeploymentReplica(targetReplica)
 }

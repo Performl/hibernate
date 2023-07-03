@@ -43,6 +43,9 @@ func main() {
 	resources := _resources.CreateResources(clientset, cfg)
 
 	// loading State
+	// fetches from ConfigMap Object
+	// loads into memory
+	// if does not exist, do nothing
 	_states.LoadState(clientset)
 
 	// commands
