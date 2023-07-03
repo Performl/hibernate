@@ -1,12 +1,8 @@
-cron:
-  timezone: Australia/Sydney
-  wake: 0 9 * * * # 9am everyday
-  sleep: 0 18 * * * # 6pm everyday
 specs:
   resources:
     deployments:
-    - name: smtp
-      namespace: apps
+    - name: resourceName
+      namespace: namespaceName
     statefulsets:
-    - name: cubestore-workers
-      namespace: cube
+    - name: resourceName
+      namespace: namespaceName

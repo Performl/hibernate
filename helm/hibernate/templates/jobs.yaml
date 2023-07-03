@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-sleep
+  namespace: {{ .Values.global.namespace }}
+spec:
+  timezone: {{ .Values.hibernate.cron.timezone }}
+  schedule: {{ .Values.hibernate.cron.sleep }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          {{- if .Values.hibernate.cron.nodeSelector }}
+          nodeSelector:
+            {{ .Values.hibernate.cron.nodeSelector | toYaml | indent 12 }}
+          {{- end }}
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-sleep
+            image: {{ .Values.hibernate.image }}
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=sleep
+            {{- if .Values.hibernate.env }}
+            env:
+            {{ .Values.hibernate.env | toYaml | indent 12 }}
+            {{- end }}
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-wake
+  namespace: {{ .Values.global.namespace }}
+spec:
+  timezone: {{ .Values.hibernate.cron.timezone }}
+  schedule: {{ .Values.hibernate.cron.wake }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          {{- if .Values.hibernate.cron.nodeSelector }}
+          nodeSelector:
+            {{ .Values.hibernate.cron.nodeSelector | toYaml | indent 12 }}
+          {{- end }}
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-sleep
+            image: {{ .Values.hibernate.image }}
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=sleep
+            {{- if .Values.hibernate.env }}
+            env:
+            {{ .Values.hibernate.env | toYaml | indent 12 }}
+            {{- end }}
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config
