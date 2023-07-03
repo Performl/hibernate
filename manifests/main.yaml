@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hibernate-config
+  namespace: hibernate
+data:
+  config.yaml: |
+    specs:
+      resources:
+        deployments:
+        - name: resourceName
+          namespace: namespaceName
+        statefulsets:
+        - name: resourceName
+          namespace: namespaceName
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-sleep
+  namespace: hibernate
+spec:
+  timezone: Australia/Sydney
+  schedule: 0 18 * * 1-5
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-sleep
+            image: ghcr.io/performl/hibernate:latest
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=sleep
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hibernate-wake
+  namespace: hibernate
+spec:
+  timezone: Australia/Sydney
+  schedule: 0 9 * * 1-5
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: hibernate-manager
+          containers:
+          - name: hibernate-wake
+            image: ghcr.io/performl/hibernate:latest
+            volumeMounts:
+            - name: config
+              mountPath: "/app/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+            args:
+            - --action=wake
+          volumes:
+          - name: config
+            configMap:
+              name: hibernate-config---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hibernate-manager
+  namespace: hibernate
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hibernate-manager-role
+rules:
+- apiGroups: ["", "apps"] # "" indicates the core API group, "apps" indicate "AppsV1"
+  resources: ["deployments", "statefulsets", "configmaps"]
+  verbs: ["get", "watch", "list", "update", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hibernate-manager-role-binding
+subjects:
+# You can specify more than one "subject"
+- kind: ServiceAccount
+  name: hibernate-manager
+  namespace: hibernate
+roleRef:
+  # "roleRef" specifies the binding to a Role / ClusterRole
+  kind: ClusterRole # this must be Role or ClusterRole
+  name: hibernate-manager-role
+  apiGroup: rbac.authorization.k8s.io
+---
