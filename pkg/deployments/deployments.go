@@ -17,14 +17,22 @@ type Deployments struct {
 	clientset *kubernetes.Clientset
 	namespace string
 	name      string
+	replicas  int32
+	typeName  string
 }
 
 func InitDeployment(clientset *kubernetes.Clientset, namespace string, name string) *Deployments {
-	return &Deployments{
+	deployments := &Deployments{
 		clientset: clientset,
 		namespace: namespace,
 		name:      name,
+		typeName:  "deployment",
 	}
+
+	// pulls data from remote
+	deployments.FetchRemoteInfo()
+
+	return deployments
 }
 
 func (d *Deployments) getClient() v1.DeploymentInterface {
@@ -36,6 +44,25 @@ func (d *Deployments) Sleep() {
 }
 
 func (d *Deployments) Wake() {
+	// todo
+}
+
+func (d *Deployments) GetState() map[string]interface{} {
+	return map[string]interface{}{
+		"name":      d.name,
+		"namespace": d.namespace,
+		"replicas":  d.replicas,
+	}
+}
+
+func (d *Deployments) FetchRemoteInfo() {
+	deploymentClient := d.getClient()
+	result, getErr := deploymentClient.Get(context.TODO(), d.name, metav1.GetOptions{})
+	if getErr != nil {
+		panic(fmt.Errorf("Failed to get latest version of Deployment: %v", getErr))
+	}
+
+	d.replicas = *result.Spec.Replicas
 
 }
 

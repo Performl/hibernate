@@ -8,6 +8,7 @@ import (
 	"github.com/performl/hibernate/pkg/config"
 	_kubeclient "github.com/performl/hibernate/pkg/kubernetes"
 	_resources "github.com/performl/hibernate/pkg/resources"
+	_states "github.com/performl/hibernate/pkg/states"
 )
 
 // flags
@@ -41,11 +42,29 @@ func main() {
 	// resources
 	resources := _resources.CreateResources(clientset, cfg)
 
+	// loading State
+	_states.LoadState(clientset)
+
 	// commands
 	switch action {
 	case "sleep":
 		{
 			_resources.SleepAll(resources)
+			for _, resource := range resources {
+				s := resource.GetState()
+
+				name := s["name"].(string)
+				namespace := s["namespace"].(string)
+				resourceType := s["typeName"].(string)
+
+				_states.SetState(
+					_states.CreateStateKey(name, namespace, resourceType),
+					map[string]interface{}{
+						"replicas": s["replicas"],
+					},
+				)
+			}
+			_states.PersistState(clientset)
 		}
 	case "wake":
 		{
