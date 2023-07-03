@@ -4,7 +4,7 @@ metadata:
   name: hibernate-sleep
   namespace: hibernate
 spec:
-  timezone: Australia/Sydney
+  timeZone: Australia/Sydney
   schedule: 0 18 * * 1-5
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
@@ -35,7 +35,7 @@ metadata:
   name: hibernate-wake
   namespace: hibernate
 spec:
-  timezone: Australia/Sydney
+  timeZone: Australia/Sydney
   schedule: 0 9 * * 1-5
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
