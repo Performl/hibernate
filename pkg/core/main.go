@@ -8,6 +8,7 @@ import (
 	"github.com/performl/hibernate/pkg/config"
 	_kubeclient "github.com/performl/hibernate/pkg/kubernetes"
 	_resources "github.com/performl/hibernate/pkg/resources"
+	_states "github.com/performl/hibernate/pkg/states"
 )
 
 // flags
@@ -45,11 +46,43 @@ func main() {
 	switch action {
 	case "sleep":
 		{
+			// loading State
+			// fetches from ConfigMap Object
+			// loads into memory
+			// if does not exist, do nothing
+			// since it will create a new statefile
+			_states.LoadState(clientset)
+
 			_resources.SleepAll(resources)
+			for _, resource := range resources {
+				s := resource.GetState()
+				name := s["name"].(string)
+				namespace := s["namespace"].(string)
+				resourceType := s["resourceType"].(string)
+				_states.SetState(
+					_states.CreateStateKey(name, namespace, resourceType),
+					map[string]interface{}{
+						"replicas": s["replicas"],
+					},
+				)
+			}
+			_states.PersistState(clientset)
 		}
 	case "wake":
 		{
+			// loading State
+			// fetches from ConfigMap Object
+			// loads into memory
+			// if does not exist, Log Fatal since prior statefile must exist before it can be woken up
+			_, err := _states.LoadState(clientset)
+			if err != nil {
+				log.Fatal(err)
+			}
 			_resources.WakeAll(resources)
+
+			// should delete statefile
+			stateFileName, stateFileNamespace := _states.GetStateFileAttrs()
+			_states.DeleteConfigMap(clientset, stateFileName, stateFileNamespace)
 		}
 	default:
 		{

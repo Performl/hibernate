@@ -5,4 +5,5 @@ package resources
 type Resources interface {
 	Sleep()
 	Wake()
+	GetState() map[string]interface{}
 }
