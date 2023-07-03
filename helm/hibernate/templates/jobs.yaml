@@ -58,7 +58,7 @@ spec:
           {{- end }}
           serviceAccountName: hibernate-manager
           containers:
-          - name: hibernate-sleep
+          - name: hibernate-wake
             image: {{ .Values.hibernate.image }}
             volumeMounts:
             - name: config
@@ -66,7 +66,7 @@ spec:
               subPath: "config.yaml"
               readOnly: true
             args:
-            - --action=sleep
+            - --action=wake
             {{- if .Values.hibernate.env }}
             env:
             {{ .Values.hibernate.env | toYaml | indent 12 }}
