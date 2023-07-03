@@ -42,20 +42,20 @@ func main() {
 	// resources
 	resources := _resources.CreateResources(clientset, cfg)
 
-	// loading State
-	// fetches from ConfigMap Object
-	// loads into memory
-	// if does not exist, do nothing
-	_states.LoadState(clientset)
-
 	// commands
 	switch action {
 	case "sleep":
 		{
+			// loading State
+			// fetches from ConfigMap Object
+			// loads into memory
+			// if does not exist, do nothing
+			// since it will create a new statefile
+			_states.LoadState(clientset)
+
 			_resources.SleepAll(resources)
 			for _, resource := range resources {
 				s := resource.GetState()
-				log.Println(s)
 				name := s["name"].(string)
 				namespace := s["namespace"].(string)
 				resourceType := s["resourceType"].(string)
@@ -70,6 +70,14 @@ func main() {
 		}
 	case "wake":
 		{
+			// loading State
+			// fetches from ConfigMap Object
+			// loads into memory
+			// if does not exist, Log Fatal since prior statefile must exist before it can be woken up
+			_, err := _states.LoadState(clientset)
+			if err != nil {
+				log.Fatal(err)
+			}
 			_resources.WakeAll(resources)
 
 			// should delete statefile

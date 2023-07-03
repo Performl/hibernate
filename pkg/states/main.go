@@ -47,16 +47,19 @@ func GetStateFileAttrs() (string, string) {
 
 // load state from configmap
 // does nothing if configmap does not exist
-func LoadState(clientset *kubernetes.Clientset) State {
+func LoadState(clientset *kubernetes.Clientset) (State, error) {
 	name, namespace := GetStateFileAttrs()
-	configMap, _ := GetConfigMap(clientset, name, namespace)
+	configMap, err := GetConfigMap(clientset, name, namespace)
+	if err != nil {
+		return nil, err
+	}
 	// if configMap already exists, load it into state
 	if configMap != nil {
 		for key, data := range configMap.Data {
 			state[key] = data // data is unstructured strings right now
 		}
 	}
-	return state
+	return state, nil
 } // returns unstructured state
 
 func PersistState(clientset *kubernetes.Clientset) error {

@@ -75,6 +75,7 @@ func (d *Deployments) FetchRemoteInfo() {
 
 func (d *Deployments) tryUpdateDeploymentReplica(targetReplica int32) error {
 	deploymentClient := d.getClient()
+	previousReplica := -1
 
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Retrieve the latest version of Deployment before attempting update
@@ -83,7 +84,7 @@ func (d *Deployments) tryUpdateDeploymentReplica(targetReplica int32) error {
 		if getErr != nil {
 			panic(fmt.Errorf("Failed to get latest version of Deployment: %v", getErr))
 		}
-
+		previousReplica = int(*result.Spec.Replicas)
 		if *result.Spec.Replicas == targetReplica {
 			return nil // no need to update
 		}
@@ -95,6 +96,6 @@ func (d *Deployments) tryUpdateDeploymentReplica(targetReplica int32) error {
 	if retryErr != nil {
 		panic(fmt.Errorf("Update failed: %v", retryErr))
 	}
-	fmt.Printf("Updated deployment for %s\n", d.name)
+	fmt.Printf("Updated deployment for %s: %d -> %d\n", d.name, previousReplica, targetReplica)
 	return nil
 }
