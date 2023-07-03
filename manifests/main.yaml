@@ -74,7 +74,8 @@ spec:
           volumes:
           - name: config
             configMap:
-              name: hibernate-config---
+              name: hibernate-config
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
