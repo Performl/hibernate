@@ -69,6 +69,10 @@ func main() {
 	case "wake":
 		{
 			_resources.WakeAll(resources)
+
+			// should delete statefile
+			stateFileName, stateFileNamespace := _states.GetStateFileAttrs()
+			_states.DeleteConfigMap(clientset, stateFileName, stateFileNamespace)
 		}
 	default:
 		{

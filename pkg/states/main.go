@@ -37,7 +37,7 @@ var state State
 
 // default name and namespace
 // TODO to be overriden by ENV VARS
-func getStateFileAttrs() (string, string) {
+func GetStateFileAttrs() (string, string) {
 	name := "hibernate-state"
 	namespace := "hibernate"
 	return name, namespace
@@ -46,7 +46,7 @@ func getStateFileAttrs() (string, string) {
 // load state from configmap
 // does nothing if configmap does not exist
 func LoadState(clientset *kubernetes.Clientset) State {
-	name, namespace := getStateFileAttrs()
+	name, namespace := GetStateFileAttrs()
 	configMap, _ := GetConfigMap(clientset, name, namespace)
 	// if configMap already exists, load it into state
 	if configMap != nil {
@@ -58,7 +58,7 @@ func LoadState(clientset *kubernetes.Clientset) State {
 } // returns unstructured state
 
 func PersistState(clientset *kubernetes.Clientset) error {
-	name, namespace := getStateFileAttrs()
+	name, namespace := GetStateFileAttrs()
 
 	data := make(map[string]string)
 	for key, value := range state {

@@ -9,6 +9,7 @@ import (
 	v1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	"k8s.io/client-go/util/retry"
 
+	_states "github.com/performl/hibernate/pkg/states"
 	"github.com/performl/hibernate/pkg/utils"
 )
 
@@ -44,7 +45,11 @@ func (d *Deployments) Sleep() {
 }
 
 func (d *Deployments) Wake() {
-	// todo
+	globalState := _states.GetState()
+	stateKey := _states.CreateStateKey(d.name, d.namespace, d.typeName)
+	state := globalState[stateKey].(map[string]interface{})
+	targetReplica := int32(state["replicas"].(float64))
+	d.tryUpdateDeploymentReplica(targetReplica)
 }
 
 func (d *Deployments) GetState() map[string]interface{} {
