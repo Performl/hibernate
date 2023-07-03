@@ -20,7 +20,7 @@ spec:
           serviceAccountName: hibernate-manager
           containers:
           - name: hibernate-sleep
-            image: {{ .Values.hibernate.image.repository }}:{{ .Values.hibernate.image.tag }}
+            image: {{ .Values.hibernate.image }}
             volumeMounts:
             - name: config
               mountPath: "/app/config.yaml"
@@ -59,7 +59,7 @@ spec:
           serviceAccountName: hibernate-manager
           containers:
           - name: hibernate-sleep
-            image: {{ .Values.hibernate.image.repository }}:{{ .Values.hibernate.image.tag }}
+            image: {{ .Values.hibernate.image }}
             volumeMounts:
             - name: config
               mountPath: "/app/config.yaml"

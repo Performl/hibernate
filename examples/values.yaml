@@ -3,10 +3,7 @@ global:
 
 hibernate:
 
-  image:
-    repository: hibernate # TODO
-    tag: latest # TODO
-    pullPolicy: IfNotPresent
+  image: ghcr.io/performl/hibernate:latest
 
   # Environment Variables
   # env:
