@@ -32,7 +32,7 @@ TODO
 kubectl create namespace hibernate
 
 # default manifests
-kubectl apply -f https://raw.githubusercontent.com/Performl/hibernate/master/manifests
+kubectl apply -f https://raw.githubusercontent.com/Performl/hibernate/master/manifests/main.yaml
 ```
 
 ## Dependencies
